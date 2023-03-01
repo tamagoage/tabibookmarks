@@ -1,0 +1,38 @@
+.checkbox-002 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5em 2em;
+    border: none;
+}
+
+.checkbox-002 label {
+    display: flex;
+    align-items: center;
+    gap: 0 .5em;
+    position: relative;
+    cursor: pointer;
+}
+
+.checkbox-002 label::before {
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    border: 2px solid #d6dde3;
+    content: '';
+}
+
+.checkbox-002 label:has(:checked)::after {
+    position: absolute;
+    top: 5px;
+    left: 7px;
+    transform: rotate(45deg);
+    width: 5px;
+    height: 10px;
+    border: solid #2589d0;
+    border-width: 0 3px 3px 0;
+    content: '';
+}
+
+.checkbox-002 input {
+    display: none;
+}

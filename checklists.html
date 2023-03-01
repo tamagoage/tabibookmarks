@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="checklists.css">
+    <title>チェックリストのページ</title>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <h1>LOGO</h1>
+        </div>
+        <div class="header-site-menu">
+            <nav class="site-menu">
+                <ul>
+                    <li><a href="schedule.html">schedule</a></li>
+                    <li><a href="places.html">places</a></li>
+                    <li><a href="checklists.html">list</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main class="main">
+        <div class="shiori">
+            <div class="title">
+                <h1>checklists</h1>
+            </div>
+            <div class="checklist-erea">
+                <!-- 以下コピペ -->
+                <fieldset class="checkbox-002">
+                    <label>
+                        <input type="checkbox" name="checkbox-002" checked/>
+                        radio1
+                    </label>
+                    <label>
+                        <input type="checkbox" name="checkbox-002"/>
+                        radio2
+                    </label>
+                    <label>
+                        <input type="checkbox" name="checkbox-002"/>
+                        radio3
+                    </label>
+                </fieldset>
+                <!-- 以上コピペ -->
+            </div>
+            <label class="open" for="pop-up">ポップアップを表示する</label>
+            <input type="checkbox" id="pop-up">
+            <div class="overlay">
+                <div class="window">
+                    <label class="close" for="pop-up">×</label>
+                    <form action="#">
+                        <label for="description">メモの内容<input type="text" name="description"></label>
+                        <button type="submit">追加する</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="copyright">@tabibookmarks</div>
+    </footer>
+</body>
+</html>
