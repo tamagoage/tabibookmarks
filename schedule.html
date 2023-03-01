@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="timeline.css">
+    <title>基本となるページ</title>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <h1>LOGO</h1>
+        </div>
+    </header>
+    <main class="main">
+        <div class="shiori">
+            <section class="timeline">
+                <div class="action_time">8:00</div>
+                <p class="action_title">九州</p>
+                <div class="action_memo">
+                    <p>飛行機のチケット</p>
+                </div>
+            </section>
+            <section class="timeline">
+                <div class="action_time">9:00</div>
+                <p class="action_title">九州</p>
+                <div class="action_memo">
+                    <p>飛行機のチケット</p>
+                </div>
+            </section>
+            <section class="timeline">
+                <div class="action_time">8:00</div>
+                <p class="action_title">九州</p>
+                <div class="action_memo">
+                    <p>飛行機のチケット</p>
+                </div>
+            </section>
+            <section class="timeline">
+                <div class="action_time">9:00</div>
+                <p class="action_title">九州</p>
+                <div class="action_memo">
+                    <p>飛行機のチケット</p>
+                </div>
+            </section>
+        </div>
+        <label class="open" for="pop-up">ポップアップを表示する</label>
+        <input type="checkbox" id="pop-up">
+        <div class="overlay">
+            <div class="window">
+                <label class="close" for="pop-up">×</label>
+                <h3>?日目</h3>
+                <form action="#">
+                    <label for="places">場所<input type="text" name="places"></label>
+                    <label for="time">時間<input type="datetime" name="s_time"><input type="datetime" name="e_time"></label>
+                    <label for="googlemap_url">googlemap<input type="text" name="googlemap"></label>
+                    <button type="submit">追加する</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="copyright">@tabibookmarks</div>
+    </footer>
+</body>
+</html>
