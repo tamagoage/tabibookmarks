@@ -1,0 +1,19 @@
+.pleasetap {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.shiori {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.title {
+    font-size: 40px;
+}
+
+.subtitle {
+    margin-top: 5;
+}
