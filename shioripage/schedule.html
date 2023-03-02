@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../common.css">
     <link rel="stylesheet" href="css/schedule.css">
     <title>基本となるページ</title>
 </head>
@@ -27,46 +28,90 @@
             <div class="title">
                 <h1>schedule</h1>
             </div>
-            <section class="timeline">
-                <div class="action_time">8:00</div>
-                <p class="action_title">九州</p>
-                <div class="action_memo">
-                    <p>飛行機のチケット</p>
+            <div class="x-days">
+                <section class="timeline">
+                    <div class="action_time">8:00</div>
+                    <p class="action_title">九州</p>
+                    <div class="action_memo">
+                        <p>飛行機のチケット</p>
+                    </div>
+                </section>
+                <section class="timeline">
+                    <div class="action_time">9:00</div>
+                    <p class="action_title">九州</p>
+                    <div class="action_memo">
+                        <p>飛行機のチケット</p>
+                    </div>
+                </section>
+                <section class="timeline">
+                    <div class="action_time">8:00</div>
+                    <p class="action_title">九州</p>
+                    <div class="action_memo">
+                        <p>飛行機のチケット</p>
+                    </div>
+                </section>
+                <section class="timeline">
+                    <div class="action_time">9:00</div>
+                    <p class="action_title">九州</p>
+                    <div class="action_memo">
+                        <p>飛行機のチケット</p>
+                    </div>
+                </section>
+                <section class="timeline">
+                    <div class="action_time">8:00</div>
+                    <p class="action_title">九州</p>
+                    <div class="action_memo">
+                        <p>飛行機のチケット</p>
+                    </div>
+                </section>
+                <section class="timeline">
+                    <div class="action_time">9:00</div>
+                    <p class="action_title">九州</p>
+                    <div class="action_memo">
+                        <p>飛行機のチケット</p>
+                    </div>
+                </section>
+                <section class="timeline">
+                    <div class="action_time">8:00</div>
+                    <p class="action_title">九州</p>
+                    <div class="action_memo">
+                        <p>飛行機のチケット</p>
+                    </div>
+                </section>
+                <section class="timeline">
+                    <div class="action_time">9:00</div>
+                    <p class="action_title">九州</p>
+                    <div class="action_memo">
+                        <p>飛行機のチケット</p>
+                    </div>
+                </section>
+                <div class="open-area">
+                    <label class="open" for="pop-up">✙</label>
                 </div>
-            </section>
-            <section class="timeline">
-                <div class="action_time">9:00</div>
-                <p class="action_title">九州</p>
-                <div class="action_memo">
-                    <p>飛行機のチケット</p>
-                </div>
-            </section>
-            <section class="timeline">
-                <div class="action_time">8:00</div>
-                <p class="action_title">九州</p>
-                <div class="action_memo">
-                    <p>飛行機のチケット</p>
-                </div>
-            </section>
-            <section class="timeline">
-                <div class="action_time">9:00</div>
-                <p class="action_title">九州</p>
-                <div class="action_memo">
-                    <p>飛行機のチケット</p>
-                </div>
-            </section>
+            </div>
         </div>
-        <label class="open" for="pop-up">ポップアップを表示する</label>
         <input type="checkbox" id="pop-up">
         <div class="overlay">
             <div class="window">
                 <label class="close" for="pop-up">×</label>
                 <h3>?日目</h3>
                 <form action="#">
-                    <label for="places">場所<input type="text" name="places"></label>
-                    <label for="time">時間<input type="datetime" name="s_time"><input type="datetime" name="e_time"></label>
-                    <label for="googlemap_url">googlemap<input type="text" name="googlemap"></label>
-                    <button type="submit">追加する</button>
+                    <dl class="form-area">
+                        <label for="places">
+                            <dt>場所</dt>
+                            <dd><input class="textarea" type="text" name="places"></dd>
+                        </label>
+                        <label for="time">
+                            <dt>時間</dt>
+                            <dd><input class="textarea" type="datetime" name="s_time"></dd>
+                            <dd><input class="textarea" type="datetime" name="e_time"></dd>
+                        </label>
+                        <label for="googlemap_url">
+                            <dt>googlemap</dt>
+                            <dd><input class="textarea" type="text" name="googlemap"></dd>
+                        </label>
+                        <button type="submit">追加する</button>
+                    </dl>
                 </form>
             </div>
         </div>
