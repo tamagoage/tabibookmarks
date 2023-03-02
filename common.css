@@ -27,7 +27,7 @@ body {
 }
 
 .header-inner {
-    max-width: 400px;
+    max-width: 420px;
     height: 120px;
     margin-left: auto;
     margin-right: auto;
@@ -39,7 +39,46 @@ body {
 	background-color: #61CAF9;
 }
 
+.header-site-menu {
+	margin: auto 55px;
+	margin-top: 5px;
+}
+
+.site-menu ul {
+	display: flex;
+	justify-content: center;
+}
+
+.site-menu li {
+	margin-right: 25px;
+}
+
+.shiori {
+	margin: 15px;
+	padding: 20px;
+	background-color: #B6E8F4;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.shiori dt {
+	font-size: 30px;
+	margin-top: 20px;
+}
+
+.shiori button {
+	background-color: #FEADC8;
+    min-width: 180px;
+    line-height: 35px;
+    border-radius: 24px;
+    font-size: 14px;
+    text-align: center;
+	margin-top: 5px;
+}
+
 .footer {
+	max-width: 420px;
 	height: 90px;
     background-color: #C0A1E1;
     padding-top: 30px;
