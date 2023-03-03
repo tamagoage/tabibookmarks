@@ -36,3 +36,10 @@
 .checkbox-002 input {
     display: none;
 }
+
+.checklist-area {
+	padding: 5px;
+	margin-top: 5px;
+	background-color: #fff;
+	position: relative;
+}

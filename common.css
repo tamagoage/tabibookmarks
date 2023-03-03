@@ -60,6 +60,7 @@ body {
 	border-radius: 20px;
 	display: flex;
 	flex-direction: column;
+	min-height: 400px;
 }
 
 .shiori dt {
@@ -94,8 +95,22 @@ body {
 
 
 /* 以下ポップアップ関係 */
+.open-area {
+	height: 55px;
+	width: 55px;
+	border-radius: 50%;
+	background-color: red;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: sticky;
+	bottom: 150px;
+	left: 300px;
+}
+
 .open {
 	cursor:pointer; /* マウスオーバーでカーソルの形状を変えることで、クリックできる要素だとわかりやすいように */
+	font-size: 50px;
 }
 #pop-up {
 	display: none; /* label でコントロールするので input は非表示に */
@@ -114,12 +129,13 @@ body {
 	left: 0;
 }
 .window {
-	width: 90vw;
+	width: 80vw;
 	max-width: 380px;
-	height: 240px;
-	background-color: #ffffff;
+	height: 440px;
+	background-color: #f8f8f8;
 	border-radius: 6px;
 	/* display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center; */
 	position: fixed;
@@ -127,20 +143,64 @@ body {
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
-.text {
+
+.window h3 {
+	margin-top: 15px;
+	text-align: center;
+}
+
+.window form {
+	height: 100%;
+}
+
+.form-area {
+	height: calc(100% - 50px);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.form-area dt {
+	margin: 20px 0  0 10px;
+	text-align: center;
+}
+
+.form-area dd {
+	margin: 5px auto 0;
+	text-align: center;
+}
+
+.textarea {
+	height: 30px;
+	margin: 10px;
+	padding: 0 5px;
+	border-radius: 10%;
+}
+
+.form-area button {
+	/* width: 100px;
+	margin: auto; */
+	background-color: #FEADC8;
+    width: 150px;
+    line-height: 35px;
+    border-radius: 24px;
+    font-size: 14px;
+    text-align: center;
+	margin: 5px auto 0;
+}
+
+/* .text {
 	font-size: 18px;
 	margin: 0;
-}
+} */
+
 .close {
 	cursor:pointer;
 	position: absolute;
 	top: 4px;
 	right: 4px;
-	font-size: 20px;
-}
-
-.window form {
-    display: flex;
-    flex-direction: column;
+	font-size: 40px;
 }
 /* ポップアップ関係終了 */
+
+

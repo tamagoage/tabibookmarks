@@ -1,4 +1,28 @@
+.bookmarks-erea {
+	padding: 5px;
+	margin-top: 5px;
+	background-color: #fff;
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
 table , td, th {
 	border: 1px solid #595959;
 	border-collapse: collapse;
+}
+
+table {
+	margin-top: 10px;
+	margin-right: 5px;
+}
+
+table .googlemap {
+	height: 50px;
+	width: 115px;
+}
+
+.open-area {
+	top: 150px;
 }
