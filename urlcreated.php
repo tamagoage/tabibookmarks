@@ -1,5 +1,22 @@
+<?php
+require('functions.php');
+
+// セッションの期限を変更する
+ini_set('session.gc_maxlifetime', 3600); // セッションが自動的に破棄されるまでの秒数を1時間に設定
+ini_set('session.cookie_lifetime', 3600); // ブラウザがセッションクッキーを保持する期間を1時間に設定
+// セッションを開始する
+session_start();
+
+if (isset($_SESSION['form'])) {
+    $form = $_SESSION['form'];
+} else {
+    header('Location: index.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,6 +25,7 @@
     <link rel="stylesheet" href="urlcreated.css">
     <title>URL作成ページ</title>
 </head>
+
 <body>
     <header class="header">
         <div class="header-inner">
@@ -20,12 +38,12 @@
             <div class="shiori">
                 <div class="title-and-subtitle">
                     <div class="title">
-                        <h1>Title</h1>
+                        <h1><?php echo h($form['title']); ?></h1>
                     </div>
-                    <div class="subtitle">subtitle</div>
+                    <div class="subtitle"><?php echo h($form['subtitle']); ?></div>
                 </div>
                 <div class="date">
-                    <h2>?/?~?/?</h2>
+                    <h2><?php echo h($form['s_date']); ?>~<?php echo h($form['e_date']); ?></h2>
                 </div>
                 <button>copy!</button>
             </div>
@@ -35,4 +53,5 @@
         <div class="copyright">@tabibookmarks</div>
     </footer>
 </body>
+
 </html>
