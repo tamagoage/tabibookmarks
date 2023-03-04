@@ -10,10 +10,18 @@
     justify-content: space-between;
 }
 
-.title {
-    font-size: 40px;
+.title-and-subtitle {
+	margin-top: 40px;
+}
+
+.title h1 {
+	font-size: 50px;
 }
 
 .subtitle {
-    margin-top: 5;
+	font-size: 20px;
+}
+
+.date h2 {
+	font-size: 20px;
 }

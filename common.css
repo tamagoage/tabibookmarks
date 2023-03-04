@@ -68,23 +68,6 @@ body {
 	margin-top: 20px;
 }
 
-/* ここから追加 */
-.title-and-subtitle {
-	margin-top: 40px;
-}
-
-.title h1 {
-	font-size: 50px;
-}
-
-.subtitle {
-	font-size: 20px;
-}
-
-.date h2 {
-	font-size: 20px;
-}
-
 .shiori button {
 	background-color: #FEADC8;
     min-width: 180px;
