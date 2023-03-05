@@ -7,10 +7,26 @@ ini_set('session.cookie_lifetime', 3600); // ブラウザがセッションク�
 // セッションを開始する
 session_start();
 
+// フォームに値が入っているときに実行
 if (isset($_SESSION['form'])) {
+    // $formにセッションの値を代入、その後データベースに入力
     $form = $_SESSION['form'];
+    $db = dbconnect();
+    $stmt = $db->prepare('insert into travels (title, subtitle, s_date, e_date, password, url) values (?,?,?,?,?,?)');
+    if(!$stmt) {
+        die($db->error);
+    }
+    $password = password_hash($form['password'], PASSWORD_DEFAULT);
+    $url = generateRandomString();
+    $stmt->bind_param('ssssss', $form['title'], $form['subtitle'], $form['s_date'], $form['e_date'], $password, $url);
+    $success = $stmt->execute();
+    if(!$success) {
+        die($db->error);
+    }
+    unset($_SESSION['form']);
 } else {
     header('Location: index.php');
+    exit();
 }
 ?>
 
