@@ -1,3 +1,24 @@
+<?php
+require('../functions.php');
+$db = dbconnect();
+// urlパラメーターが一致するものを表示
+$stmt = $db->prepare('SELECT destination, time, transportation, memo FROM schedules 
+                        JOIN pages_info ON schedules.schedules_id = pages_info.id
+                        JOIN travels ON pages_info.id = travels.id
+                        WHERE travels.url = ?');    
+if (!$stmt) {
+        die($db->error);
+}
+$url = filter_input(INPUT_GET, 'id', FILTER_DEFAULT);
+$stmt->bind_param('s', $url);
+$success = $stmt->execute();
+if(!$stmt) {
+    die($db->error);
+}
+// dbから受け取った値を変数に代入
+$stmt->bind_result($destination, $time, $transportation, $memo);
+$stmt->fetch();
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,7 +32,7 @@
 <body>
     <header class="header">
         <div class="header-inner">
-            <h1>LOGO</h1>
+            <h1>LOGO<?php echo h($destination); ?></h1>
         </div>
     </header>
     <main class="main">

@@ -50,7 +50,7 @@ if (isset($_SESSION['form'])) {
     </header>
     <main class="main">
         <p class="pleasetap">下のエリアをタップ</p>
-        <a href="shioripage/schedule.html">
+        <a href="shioripage/schedule.php">
             <div class="shiori">
                 <div class="title-and-subtitle">
                     <div class="title">
