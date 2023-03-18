@@ -24,4 +24,22 @@ function generateRandomString($length = 40) {
     return $randomString;
 }
 
+function get_travels_table_id($db, $value) {
+    $stmt = $db->prepare('SELECT id FROM travels WHERE url = ?');
+    if (!$stmt) {
+        die($db->error);
+    }
+    $stmt->bind_param('s', $value);
+    $success = $stmt->execute();
+    if (!$success) {
+        die($db->error);
+    }
+
+    $stmt->bind_result($id);
+    $stmt->fetch();
+    $stmt->close();
+    return $id;
+}
+
+
 ?>

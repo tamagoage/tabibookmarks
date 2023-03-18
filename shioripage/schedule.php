@@ -17,7 +17,7 @@ if(!$success) {
 }
 
 // dbから受け取った値を代入する変数を"用意" 必須
-$stmt->bind_result($travels_r_id, $destination, $time,/* $transportation,*/ $memo);
+$stmt->bind_result($id, $destination, $time,/* $transportation,*/ $memo);
 $stmt->execute();
 $stmt->store_result();
 // この下にあるfetchが悪さをしている！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // travelテーブルのidと紐づける テスト
-    $travels_r_id = 1;
+    $travels_r_id = 2;
 
     $stmt->bind_param('isss', $travels_r_id, $form['destination'], $form['time'], $form['memo']);
     $success = $stmt->execute();
