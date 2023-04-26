@@ -1,14 +1,15 @@
 <?php
 require('../functions.php');
 $db = dbconnect();
-// urlパラメーターがtravels.urlと一致するものを表示 必須
+// 画面に表示する処理
+// urlパラメーターがtravels.urlと一致するものを取得
 $stmt = $db->prepare('SELECT travels.id, destination, time, /*transportation, */memo FROM schedules 
                         JOIN travels ON schedules.travels_r_id = travels.id
                         WHERE travels.url = ?');    
 if (!$stmt) {
         die($db->error);
 }
-// urlパラメーターの?=以降を取得 必須
+// urlパラメーターを取得して代入
 $url = filter_input(INPUT_GET, 'id', FILTER_DEFAULT);
 $stmt->bind_param('s', $url);
 $success = $stmt->execute();
@@ -16,41 +17,61 @@ if(!$success) {
     die($db->error);
 }
 
-// dbから受け取った値を代入する変数を"用意" 必須
-$stmt->bind_result($id, $destination, $time,/* $transportation,*/ $memo);
-$stmt->execute();
+// dbから受け取った値を代入する変数を用意
+$stmt->bind_result($id, $destination, $time, $memo);
+
+// 結果セットをメモリに格納する
 $stmt->store_result();
-// この下にあるfetchが悪さをしている！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
-// $stmt->fetch();
-// scheduleの追加
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $form['destination'] = filter_input(INPUT_POST, 'destination', FILTER_DEFAULT);
-    if ($form['destination'] === "") {
-        $error['destination'] = 'blank';
-    }
 
-    $form['memo'] = filter_input(INPUT_POST, 'memo', FILTER_DEFAULT);
+// // 変数宣言
+// $timeline = [
+//     'time'=>'',
+//     'destination'=>'',
+//     'memo'=>''
+// ];
 
-    $form['time'] = filter_input(INPUT_POST, 'time', FILTER_DEFAULT);
-    if ($form['time'] === "") {
-        $error['time'] = 'blank';
-    }
+// すべての行を取得する
+while ($stmt->fetch()) {
+    // travelテーブルのidと紐づけるために変数に代入
+    $travels_r_id = $id;
 
-    $form['googlemap_url'] = filter_input(INPUT_POST, 'googlemap_url', FILTER_DEFAULT);
-    
-    // dbに登録
-    $stmt = $db->prepare('insert into schedules (travels_r_id, destination, time, memo) values(?,?,?,?)');
-    if(!$stmt) {
-        die($db->error);
-    }
+    // 取得した行を変数に代入
+    $timeline[] = [
+            'time' => $time,
+            'destination' => $destination,
+            'memo' => $memo
+        ];
+    // scheduleの追加
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $form['destination'] = filter_input(INPUT_POST, 'destination', FILTER_DEFAULT);
+        if ($form['destination'] === "") {
+            $error['destination'] = 'blank';
+        }
 
-    // travelテーブルのidと紐づける テスト
-    $travels_r_id = 2;
+        $form['memo'] = filter_input(INPUT_POST, 'memo', FILTER_DEFAULT);
 
-    $stmt->bind_param('isss', $travels_r_id, $form['destination'], $form['time'], $form['memo']);
-    $success = $stmt->execute();
-    if(!$success) {
-        die($db->error);
+        $form['time'] = filter_input(INPUT_POST, 'time', FILTER_DEFAULT);
+        if ($form['time'] === "") {
+            $error['time'] = 'blank';
+        }
+
+        $form['googlemap_url'] = filter_input(INPUT_POST, 'googlemap_url', FILTER_DEFAULT);
+
+        // dbに登録
+        $stmt_while = $db->prepare('insert into schedules (travels_r_id, destination, time, memo) values(?,?,?,?)');
+        if (!$stmt_while) {
+            die($db->error);
+        }
+
+        $stmt_while->bind_param('isss', $travels_r_id, $form['destination'], $form['time'], $form['memo']);
+        $success = $stmt_while->execute();
+        if (!$success) {
+            die($db->error);
+        }
+        $stmt_while->close(); // 追加した行
+
+        header('Location: schedule.php?id=' . $url);
+        exit();
     }
 }
 ?>
@@ -86,15 +107,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="x-days">
                 <!-- 一行ずつ代入 -->
-                <?php while ($stmt->fetch()): ?>
+                
+                    <?php foreach ($timeline as $timeline_while): ?>
                 <section class="timeline">
-                    <div class="action_time"><?php echo h($time); ?></div>
-                    <p class="action_title"><?php echo h($destination); ?></p>
+                    <div class="action_time"><?php echo h($timeline_while['time']); ?></div>
+                    <p class="action_title"><?php echo h($timeline_while['destination']); ?></p>
                     <div class="action_memo">
-                        <p><?php echo h($memo); ?></p>
+                        <p><?php echo h($timeline_while['memo']); ?></p>
                     </div>
                 </section>
-                <?php endwhile; ?>
+                    <?php endforeach; ?>
+                
                 <div class="open-area">
                     <label class="open" for="pop-up">✙</label>
                 </div>
