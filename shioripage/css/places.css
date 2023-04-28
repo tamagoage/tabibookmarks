@@ -13,13 +13,19 @@ table , td, th {
 	border-collapse: collapse;
 }
 
+tbody tr:hover {
+	background-color: #f2f2f2;
+}
+
 table {
 	margin-top: 10px;
 	margin-right: 5px;
+	width: 120px;
+	height: 100px;
 }
 
 table .googlemap {
-	height: 50px;
+	height: 70px;
 	width: 115px;
 }
 

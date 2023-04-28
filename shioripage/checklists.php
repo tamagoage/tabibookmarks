@@ -16,9 +16,9 @@
         <div class="header-site-menu">
             <nav class="site-menu">
                 <ul>
-                    <li><a href="schedule.html">schedule</a></li>
-                    <li><a href="places.html">places</a></li>
-                    <li><a href="checklists.html">list</a></li>
+                    <li><a href="schedule.php">schedule</a></li>
+                    <li><a href="places.php">places</a></li>
+                    <li><a href="checklists.php">list</a></li>
                 </ul>
             </nav>
         </div>

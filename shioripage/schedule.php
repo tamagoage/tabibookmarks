@@ -83,7 +83,7 @@ while ($stmt->fetch()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../common.css">
     <link rel="stylesheet" href="css/schedule.css">
-    <title>基本となるページ</title>
+    <title>schedule</title>
 </head>
 <body>
     <header class="header">
@@ -95,9 +95,9 @@ while ($stmt->fetch()) {
         <div class="header-site-menu">
             <nav class="site-menu">
                 <ul>
-                    <li><a href="schedule.html">schedule</a></li>
-                    <li><a href="places.html">places</a></li>
-                    <li><a href="checklists.html">list</a></li>
+                    <li><a href="schedule.php">schedule</a></li>
+                    <li><a href="places.php">places</a></li>
+                    <li><a href="checklists.php">list</a></li>
                 </ul>
             </nav>
         </div>
