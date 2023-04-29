@@ -1,3 +1,70 @@
+<?php 
+require('../functions.php');
+$db = dbconnect();
+// 画面に表示する処理
+// urlパラメーターがtravels.urlと一致するものを取得
+$stmt = $db->prepare('SELECT travels.id, name, address, googlemap_url FROM places 
+                        JOIN travels ON places.travels_r_id = travels.id
+                        WHERE travels.url = ?');
+if (!$stmt) {
+        die($db->error);
+}
+// urlパラメーターを取得して代入
+$url = filter_input(INPUT_GET, 'id', FILTER_DEFAULT);
+$stmt->bind_param('s', $url);
+$success = $stmt->execute();
+if(!$success) {
+    die($db->error);
+}
+
+// dbから受け取った値を代入する変数を用意
+$stmt->bind_result($id, $name, $address, $googlemap_url);
+
+// 結果セットをメモリに格納する
+$stmt->store_result();
+
+// すべての行を取得する
+while ($stmt->fetch()) {
+    // travelテーブルのidと紐づけるために変数に代入
+    $travels_r_id = $id;
+
+    // 取得した行を変数に代入
+    $places[] = [
+            'name' => $name,
+            'address' => $address,
+            'googlemap_url' => $googlemap_url
+        ];
+    // placesの追加
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $form['name'] = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
+        if ($form['name'] === "") {
+            $error['name'] = 'blank';
+        }
+
+        $form['address'] = filter_input(INPUT_POST, 'address', FILTER_DEFAULT);
+
+        $form['googlemap_url'] = filter_input(INPUT_POST, 'googlemap_url', FILTER_DEFAULT);
+
+        // dbに登録
+        if (empty($error)) {
+            $stmt_while = $db->prepare('INSERT INTO places (travels_r_id, name, address, googlemap_url) values(?,?,?,?)');
+            if (!$stmt_while) {
+                die($db->error);
+            }
+
+            $stmt_while->bind_param('isss', $travels_r_id, $form['name'], $form['address'], $form['googlemap_url']);
+            $success = $stmt_while->execute();
+            if (!$success) {
+                die($db->error);
+            }
+            $stmt_while->close();
+
+            header('Location: places.php?id=' . $url);
+            exit();
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -29,201 +96,21 @@
                 <h1>places</h1>
             </div>
             <div class="bookmarks-erea">
+                <?php foreach ($places as $places_while): ?>
                 <table>
                     <tbody>
                         <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
+                            <td colspan="7"><?php echo h($places_while['name']); ?></td>
                         </tr>
                         <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
+                            <td colspan="7"><?php echo h($places_while['googlemap_url']); ?></td>
                         </tr>
                         <tr class="address">
-                            <td colspan="7">北海道</td>
+                            <td colspan="7"><?php echo h($places_while['address']); ?></td>
                         </tr>
                     </tbody>
                 </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7">焼き鳥屋</td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7">MAPMAP</td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7">北海道</td>
-                        </tr>
-                    </tbody>
-                    <table>
-                        <tbody>
-                            <tr class="name">
-                                <td colspan="7">焼き鳥屋</td>
-                            </tr>
-                            <tr class="googlemap">
-                                <td colspan="7">MAPMAP</td>
-                            </tr>
-                            <tr class="address">
-                                <td colspan="7">北海道</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                            <tr class="name">
-                                <td colspan="7">焼き鳥屋</td>
-                            </tr>
-                            <tr class="googlemap">
-                                <td colspan="7">MAPMAP</td>
-                            </tr>
-                            <tr class="address">
-                                <td colspan="7">北海道</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table>
-                        <tbody>
-                            <tr class="name">
-                                <td colspan="7">焼き鳥屋</td>
-                            </tr>
-                            <tr class="googlemap">
-                                <td colspan="7">MAPMAP</td>
-                            </tr>
-                            <tr class="address">
-                                <td colspan="7">北海道</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </table>
+                <?php endforeach; ?>
                 <div class="open-area">
                     <label class="open" for="pop-up">✙</label>
                 </div>
@@ -233,7 +120,7 @@
                 <div class="window">
                     <label class="close" for="pop-up">×</label>
                     <h3>?日目</h3>
-                    <form action="#">
+                    <form action="" method="post">
                         <dl class="form-area">
                             <label for="name">
                                 <dt>店名</dt>
@@ -245,7 +132,7 @@
                             </label>
                             <label for="googlemap_url">
                                 <dt>googlemap</dt>
-                                <dd><input class="textarea" type="text" name="googlemap"></dd>
+                                <dd><input class="textarea" type="text" name="googlemap_url"></dd>
                             </label>
                             <button type="submit">追加する</button>
                         </dl>

@@ -23,13 +23,6 @@ $stmt->bind_result($id, $destination, $time, $memo);
 // 結果セットをメモリに格納する
 $stmt->store_result();
 
-// // 変数宣言
-// $timeline = [
-//     'time'=>'',
-//     'destination'=>'',
-//     'memo'=>''
-// ];
-
 // すべての行を取得する
 while ($stmt->fetch()) {
     // travelテーブルのidと紐づけるために変数に代入
