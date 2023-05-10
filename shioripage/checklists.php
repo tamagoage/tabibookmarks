@@ -1,5 +1,6 @@
 <?php
 include("../functions.php");
+include("../get_id.php");
 $db = dbconnect();
 // 画面に表示する処理
 // urlパラメーターがtravels.urlと一致するものを取得
@@ -23,40 +24,44 @@ $stmt->bind_result($id, $list);
 // 結果セットをメモリに格納する
 $stmt->store_result();
 
+// travelテーブルのidと紐づけるために変数に代入
+$travels_r_id = $id;
+
+$checklists = [];
+
 // すべての行を取得する
 while ($stmt->fetch()) {
-    // travelテーブルのidと紐づけるために変数に代入
-    $travels_r_id = $id;
 
     // 取得した行を変数に代入
     $checklists[] = [
         'list' => $list
     ];
-    // checklistsの追加
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $form['list'] = filter_input(INPUT_POST, 'list', FILTER_DEFAULT);
-        if ($form['list'] === "") {
-            $error['list'] = 'blank';
+}
+
+// checklistsの追加
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $form['list'] = filter_input(INPUT_POST, 'list', FILTER_DEFAULT);
+    if ($form['list'] === "") {
+        $error['list'] = 'blank';
+    }
+
+    // dbに登録
+    if (empty($error)) {
+        $stmt_while = $db->prepare('INSERT INTO checklists (travels_r_id, list) values(?,?)');
+        if (!$stmt_while) {
+            die($db->error);
         }
 
-        // dbに登録
-        if (empty($error)) {
-            $stmt_while = $db->prepare('INSERT INTO checklists (travels_r_id, list) values(?,?)');
-            if (!$stmt_while) {
-                die($db->error);
-            }
-
-            $stmt_while->bind_param('is', $travels_r_id, $form['list']);
-            $success = $stmt_while->execute();
-            if (!$success) {
-                die($db->error);
-            }
-            $stmt_while->close();
-
-            // リロード対策
-            header('Location: checklists.php?id=' . $url);
-            exit();
+        $stmt_while->bind_param('is', $travels_r_id, $form['list']);
+        $success = $stmt_while->execute();
+        if (!$success) {
+            die($db->error);
         }
+        $stmt_while->close();
+
+        // リロード対策
+        header('Location: checklists.php?id=' . $url);
+        exit();
     }
 }
 ?>
@@ -84,9 +89,9 @@ while ($stmt->fetch()) {
         <div class="header-site-menu">
             <nav class="site-menu">
                 <ul>
-                    <li><a href="schedule.php">schedule</a></li>
-                    <li><a href="places.php">places</a></li>
-                    <li><a href="checklists.php">list</a></li>
+                    <li><a href="schedule.php?id=<?php echo $url; ?>">schedule</a></li>
+                    <li><a href="places.php?id=<?php echo $url; ?>">places</a></li>
+                    <li><a href="checklists.php?id=<?php echo $url; ?>">list</a></li>
                 </ul>
             </nav>
         </div>

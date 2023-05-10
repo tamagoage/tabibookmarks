@@ -1,5 +1,7 @@
 <?php 
 require('../functions.php');
+require('../get_id.php');
+
 $db = dbconnect();
 // 画面に表示する処理
 // urlパラメーターがtravels.urlと一致するものを取得
@@ -23,10 +25,13 @@ $stmt->bind_result($id, $name, $address, $googlemap_url);
 // 結果セットをメモリに格納する
 $stmt->store_result();
 
+// travelテーブルのidと紐づけるために変数に代入
+$travels_r_id = $id;
+
+$places = [];
+
 // すべての行を取得する
 while ($stmt->fetch()) {
-    // travelテーブルのidと紐づけるために変数に代入
-    $travels_r_id = $id;
 
     // 取得した行を変数に代入
     $places[] = [
@@ -34,34 +39,35 @@ while ($stmt->fetch()) {
             'address' => $address,
             'googlemap_url' => $googlemap_url
         ];
-    // placesの追加
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $form['name'] = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
-        if ($form['name'] === "") {
-            $error['name'] = 'blank';
+}
+
+// placesの追加
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $form['name'] = filter_input(INPUT_POST, 'name', FILTER_DEFAULT);
+    if ($form['name'] === "") {
+        $error['name'] = 'blank';
+    }
+
+    $form['address'] = filter_input(INPUT_POST, 'address', FILTER_DEFAULT);
+
+    $form['googlemap_url'] = filter_input(INPUT_POST, 'googlemap_url', FILTER_DEFAULT);
+
+    // dbに登録
+    if (empty($error)) {
+        $stmt_while = $db->prepare('INSERT INTO places (travels_r_id, name, address, googlemap_url) values(?,?,?,?)');
+        if (!$stmt_while) {
+            die($db->error);
         }
 
-        $form['address'] = filter_input(INPUT_POST, 'address', FILTER_DEFAULT);
-
-        $form['googlemap_url'] = filter_input(INPUT_POST, 'googlemap_url', FILTER_DEFAULT);
-
-        // dbに登録
-        if (empty($error)) {
-            $stmt_while = $db->prepare('INSERT INTO places (travels_r_id, name, address, googlemap_url) values(?,?,?,?)');
-            if (!$stmt_while) {
-                die($db->error);
-            }
-
-            $stmt_while->bind_param('isss', $travels_r_id, $form['name'], $form['address'], $form['googlemap_url']);
-            $success = $stmt_while->execute();
-            if (!$success) {
-                die($db->error);
-            }
-            $stmt_while->close();
-
-            header('Location: places.php?id=' . $url);
-            exit();
+        $stmt_while->bind_param('isss', $travels_r_id, $form['name'], $form['address'], $form['googlemap_url']);
+        $success = $stmt_while->execute();
+        if (!$success) {
+            die($db->error);
         }
+        $stmt_while->close();
+
+        header('Location: places.php?id=' . $url);
+        exit();
     }
 }
 ?>
@@ -83,9 +89,9 @@ while ($stmt->fetch()) {
         <div class="header-site-menu">
             <nav class="site-menu">
                 <ul>
-                    <li><a href="schedule.php">schedule</a></li>
-                    <li><a href="places.php">places</a></li>
-                    <li><a href="checklists.php">list</a></li>
+                    <li><a href="schedule.php?id=<?php echo $url; ?>">schedule</a></li>
+                    <li><a href="places.php?id=<?php echo $url; ?>">places</a></li>
+                    <li><a href="checklists.php?id=<?php echo $url; ?>">list</a></li>
                 </ul>
             </nav>
         </div>

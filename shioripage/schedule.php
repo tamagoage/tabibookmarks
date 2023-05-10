@@ -1,5 +1,7 @@
 <?php
 require('../functions.php');
+require('../get_id.php');
+
 $db = dbconnect();
 // 画面に表示する処理
 // urlパラメーターがtravels.urlと一致するものを取得
@@ -23,49 +25,52 @@ $stmt->bind_result($id, $destination, $time, $memo);
 // 結果セットをメモリに格納する
 $stmt->store_result();
 
+// travelテーブルのidと紐づけるために変数に代入
+$travels_r_id = $_COOKIE['id'];
+
+$timeline = []; 
+
 // すべての行を取得する
 while ($stmt->fetch()) {
-    // travelテーブルのidと紐づけるために変数に代入
-    $travels_r_id = $id;
-
     // 取得した行を変数に代入
     $timeline[] = [
             'time' => $time,
             'destination' => $destination,
             'memo' => $memo
         ];
-    // scheduleの追加
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $form['destination'] = filter_input(INPUT_POST, 'destination', FILTER_DEFAULT);
-        if ($form['destination'] === "") {
-            $error['destination'] = 'blank';
-        }
+}
 
-        $form['memo'] = filter_input(INPUT_POST, 'memo', FILTER_DEFAULT);
-
-        $form['time'] = filter_input(INPUT_POST, 'time', FILTER_DEFAULT);
-        if ($form['time'] === "") {
-            $error['time'] = 'blank';
-        }
-
-        $form['googlemap_url'] = filter_input(INPUT_POST, 'googlemap_url', FILTER_DEFAULT);
-
-        // dbに登録
-        $stmt_while = $db->prepare('insert into schedules (travels_r_id, destination, time, memo) values(?,?,?,?)');
-        if (!$stmt_while) {
-            die($db->error);
-        }
-
-        $stmt_while->bind_param('isss', $travels_r_id, $form['destination'], $form['time'], $form['memo']);
-        $success = $stmt_while->execute();
-        if (!$success) {
-            die($db->error);
-        }
-        $stmt_while->close(); // 追加した行
-
-        header('Location: schedule.php?id=' . $url);
-        exit();
+// scheduleの追加
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $form['destination'] = filter_input(INPUT_POST, 'destination', FILTER_DEFAULT);
+    if ($form['destination'] === "") {
+        $error['destination'] = 'blank';
     }
+
+    $form['memo'] = filter_input(INPUT_POST, 'memo', FILTER_DEFAULT);
+
+    $form['time'] = filter_input(INPUT_POST, 'time', FILTER_DEFAULT);
+    if ($form['time'] === "") {
+        $error['time'] = 'blank';
+    }
+
+    $form['googlemap_url'] = filter_input(INPUT_POST, 'googlemap_url', FILTER_DEFAULT);
+
+    // dbに登録
+    $stmt_while = $db->prepare('insert into schedules (travels_r_id, destination, time, memo) values(?,?,?,?)');
+    if (!$stmt_while) {
+        die($db->error);
+    }
+
+    $stmt_while->bind_param('isss', $travels_r_id, $form['destination'], $form['time'], $form['memo']);
+    $success = $stmt_while->execute();
+    if (!$success) {
+        die($db->error);
+    }
+    $stmt_while->close(); // 追加した行
+
+    header('Location: schedule.php?id=' . $url);
+    exit();
 }
 ?>
 <!DOCTYPE html> 
@@ -88,9 +93,9 @@ while ($stmt->fetch()) {
         <div class="header-site-menu">
             <nav class="site-menu">
                 <ul>
-                    <li><a href="schedule.php">schedule</a></li>
-                    <li><a href="places.php">places</a></li>
-                    <li><a href="checklists.php">list</a></li>
+                    <li><a href="schedule.php?id=<?php echo $url; ?>">schedule</a></li>
+                    <li><a href="places.php?id=<?php echo $url; ?>">places</a></li>
+                    <li><a href="checklists.php?id=<?php echo $url; ?>">list</a></li>
                 </ul>
             </nav>
         </div>
