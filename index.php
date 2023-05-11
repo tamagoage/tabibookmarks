@@ -33,6 +33,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if(empty($error)) {
+
+        // 日付を配列に格納
+        $travel_dates = array();
+        $start = new DateTime($form['s_date']);
+        $end = new DateTime($form['e_date']);
+        $interval = DateInterval::createFromDateString('1 day');
+        $period = new DatePeriod($start, $interval, $end);
+        foreach ($period as $date) {
+            $travel_dates[] = $date->format("Y-m-d");
+        }
+        // クッキーに保存
+        setcookie('travel_dates', json_encode($travel_dates), time()+60*60*24*30);
+
         $_SESSION['form'] = $form;
         header('Location:urlcreated.php');
         exit();
