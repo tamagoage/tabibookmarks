@@ -40,6 +40,9 @@ while ($stmt->fetch()) {
         ];
 }
 
+// クッキーから配列を取得
+$travel_dates = json_decode($_COOKIE['travel_dates'], true);
+
 // scheduleの追加
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form['destination'] = filter_input(INPUT_POST, 'destination', FILTER_DEFAULT);
@@ -49,6 +52,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $form['memo'] = filter_input(INPUT_POST, 'memo', FILTER_DEFAULT);
 
+    $form['travel_dates'] = filter_input(INPUT_POST, 'travel_dates', FILTER_DEFAULT);
+
     $form['time'] = filter_input(INPUT_POST, 'time', FILTER_DEFAULT);
     if ($form['time'] === "") {
         $error['time'] = 'blank';
@@ -56,13 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $form['googlemap_url'] = filter_input(INPUT_POST, 'googlemap_url', FILTER_DEFAULT);
 
+
     // dbに登録
-    $stmt_while = $db->prepare('insert into schedules (travels_r_id, destination, time, memo) values(?,?,?,?)');
+    $stmt_while = $db->prepare('insert into schedules (travels_r_id, destination, travel_dates, time, memo) values(?,?,?,?,?)');
     if (!$stmt_while) {
         die($db->error);
     }
 
-    $stmt_while->bind_param('isss', $travels_r_id, $form['destination'], $form['time'], $form['memo']);
+    $stmt_while->bind_param('issss', $travels_r_id, $form['destination'], $form['travel_dates'], $form['time'], $form['memo']);
     $success = $stmt_while->execute();
     if (!$success) {
         die($db->error);
@@ -125,9 +131,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="overlay">
             <div class="window">
                 <label class="close" for="pop-up">×</label>
-                <h3>?日目</h3>
                 <form action="" method="post">
                     <dl class="form-area">
+                    <select name="travel_dates" id="select_days">
+                        <?php for ($i = 0; $i < count($travel_dates); $i++): ?>
+                            <option value="<?php echo h($travel_dates[$i]); ?>"><?php echo h($travel_dates[$i]); ?></option>
+                        <?php endfor; ?>
+                    </select>
                         <label for="destination">
                             <dt>場所</dt>
                             <dd><input class="textarea" type="text" name="destination"></dd>
@@ -138,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </label>
                         <label for="time">
                             <dt>時間</dt>
-                            <dd><input class="textarea" type="datetime" name="time"></dd>
+                            <dd><input class="textarea" type="time" name="time"></dd>
                         </label>
                         <label for="googlemap_url">
                             <dt>googlemap</dt>
