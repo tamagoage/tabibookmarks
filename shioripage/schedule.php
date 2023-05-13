@@ -40,6 +40,12 @@ while ($stmt->fetch()) {
         ];
 }
 
+// 時間順にソート
+usort($timeline, function($a, $b) {
+    return strtotime($a['time']) - strtotime($b['time']);
+});
+
+
 // クッキーから配列を取得
 $travel_dates = json_decode($_COOKIE['travel_dates'], true);
 
