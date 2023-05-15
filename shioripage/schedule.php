@@ -5,22 +5,22 @@ require('../get_id.php');
 $db = dbconnect();
 // 画面に表示する処理
 // urlパラメーターがtravels.urlと一致するものを取得
-$stmt = $db->prepare('SELECT travels.id, destination, time, /*transportation, */memo FROM schedules 
+$stmt = $db->prepare('SELECT travels.id, destination, travel_dates, time, memo FROM schedules 
                         JOIN travels ON schedules.travels_r_id = travels.id
-                        WHERE travels.url = ?');    
+                        WHERE travels.url = ?');
 if (!$stmt) {
-        die($db->error);
+    die($db->error);
 }
 // urlパラメーターを取得して代入
 $url = filter_input(INPUT_GET, 'id', FILTER_DEFAULT);
 $stmt->bind_param('s', $url);
 $success = $stmt->execute();
-if(!$success) {
+if (!$success) {
     die($db->error);
 }
 
 // dbから受け取った値を代入する変数を用意
-$stmt->bind_result($id, $destination, $time, $memo);
+$stmt->bind_result($id, $destination, $day, $time, $memo);
 
 // 結果セットをメモリに格納する
 $stmt->store_result();
@@ -28,20 +28,22 @@ $stmt->store_result();
 // travelテーブルのidと紐づけるために変数に代入
 $travels_r_id = $_COOKIE['id'];
 
-$timeline = []; 
+$timeline = [];
 
 // すべての行を取得する
 while ($stmt->fetch()) {
     // 取得した行を変数に代入
     $timeline[] = [
-            'time' => $time,
-            'destination' => $destination,
-            'memo' => $memo
-        ];
+        'time' => $time,
+        'travel_dates' => $day,
+        'destination' => $destination,
+        'memo' => $memo
+    ];
 }
 
+
 // 時間順にソート
-usort($timeline, function($a, $b) {
+usort($timeline, function ($a, $b) {
     return strtotime($a['time']) - strtotime($b['time']);
 });
 
@@ -85,8 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 ?>
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -95,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/schedule.css">
     <title>schedule</title>
 </head>
+
 <body>
     <header class="header">
         <div class="header-inner">
@@ -116,18 +120,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h1>schedule</h1>
             </div>
             <div class="x-days">
-                <!-- 一行ずつ代入 -->
-                
-                    <?php foreach ($timeline as $timeline_while): ?>
-                <section class="timeline">
-                    <div class="action_time"><?php echo h($timeline_while['time']); ?></div>
-                    <p class="action_title"><?php echo h($timeline_while['destination']); ?></p>
-                    <div class="action_memo">
-                        <p><?php echo h($timeline_while['memo']); ?></p>
-                    </div>
-                </section>
+                <!-- 日付ごとに場所を仕分ける -->
+                <?php foreach ($travel_dates as $target_date) : ?>
+                                    <!-- 一行ずつ代入 -->
+                    <?php foreach ($timeline as $timeline_while) : ?>
+                        <?php if ($timeline_while['travel_dates'] == $target_date) : ?>
+                            <section class="timeline">
+                                <div class="action_time"><?php echo h($timeline_while['time']); ?></div>
+                                <p class="action_title"><?php echo h($timeline_while['destination']); ?></p>
+                                <div class="action_memo">
+                                    <p><?php echo h($timeline_while['memo']); ?></p>
+                                </div>
+                            </section>
+                        <?php endif; ?>
                     <?php endforeach; ?>
-                
+                <?php endforeach; ?>
                 <div class="open-area">
                     <label class="open" for="pop-up">✙</label>
                 </div>
@@ -139,11 +146,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label class="close" for="pop-up">×</label>
                 <form action="" method="post">
                     <dl class="form-area">
-                    <select name="travel_dates" id="select_days">
-                        <?php for ($i = 0; $i < count($travel_dates); $i++): ?>
-                            <option value="<?php echo h($travel_dates[$i]); ?>"><?php echo h($travel_dates[$i]); ?></option>
-                        <?php endfor; ?>
-                    </select>
+                        <select name="travel_dates" id="select_days">
+                            <?php for ($i = 0; $i < count($travel_dates); $i++) : ?>
+                                <option value="<?php echo h($travel_dates[$i]); ?>"><?php echo h($travel_dates[$i]); ?></option>
+                            <?php endfor; ?>
+                        </select>
                         <label for="destination">
                             <dt>場所</dt>
                             <dd><input class="textarea" type="text" name="destination"></dd>
@@ -170,4 +177,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="copyright">@tabibookmarks</div>
     </footer>
 </body>
+
 </html>
