@@ -41,5 +41,17 @@ function get_travels_table_id($db, $value) {
     return $id;
 }
 
-
+// テーブルを削除する
+function delete($db, $table, $id_name, $id) {
+    $stmt = $db->prepare('DELETE FROM ' . $table . ' WHERE '.$id_name.' = ?');
+    if (!$stmt) {
+        die($db->error);
+    }
+    $stmt->bind_param('i', $id);
+    $success = $stmt->execute();
+    if (!$success) {
+        die($db->error);
+    }
+    $stmt->close();
+}
 ?>

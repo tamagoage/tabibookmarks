@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 日付を配列に格納
         $travel_dates = array();
         $start = new DateTime($form['s_date']);
-        $end = new DateTime($form['e_date']);
+        $end = (new DateTime($form['e_date']))->setTime(0, 0, 1); // 00:00:01 (翌日の00:00:00を指定するため
         $interval = DateInterval::createFromDateString('1 day');
         $period = new DatePeriod($start, $interval, $end);
         foreach ($period as $date) {

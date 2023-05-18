@@ -3,9 +3,10 @@ require('../functions.php');
 require('../get_id.php');
 
 $db = dbconnect();
+
 // 画面に表示する処理
 // urlパラメーターがtravels.urlと一致するものを取得
-$stmt = $db->prepare('SELECT travels.id, destination, travel_dates, time, memo FROM schedules 
+$stmt = $db->prepare('SELECT travels.id, schedules_id, destination, travel_dates, time, memo FROM schedules 
                         JOIN travels ON schedules.travels_r_id = travels.id
                         WHERE travels.url = ?');
 if (!$stmt) {
@@ -20,7 +21,7 @@ if (!$success) {
 }
 
 // dbから受け取った値を代入する変数を用意
-$stmt->bind_result($id, $destination, $day, $time, $memo);
+$stmt->bind_result($id, $schedules_id, $destination, $day, $time, $memo);
 
 // 結果セットをメモリに格納する
 $stmt->store_result();
@@ -34,6 +35,7 @@ $timeline = [];
 while ($stmt->fetch()) {
     // 取得した行を変数に代入
     $timeline[] = [
+        'schedules_id' => $schedules_id,
         'time' => $time,
         'travel_dates' => $day,
         'destination' => $destination,
@@ -50,6 +52,18 @@ usort($timeline, function ($a, $b) {
 
 // クッキーから配列を取得
 $travel_dates = json_decode($_COOKIE['travel_dates'], true);
+
+// scheduleの削除
+// delete関数用の変数用意
+$schedules = 'schedules';
+$schedules_id = 'schedules_id';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    $delete_id = $_POST['delete_id'];
+    delete($db, $schedules, $schedules_id, $delete_id);
+    header('Location: schedule.php?id=' . $url);
+    exit();
+}
 
 // scheduleの追加
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -122,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="x-days">
                 <!-- 日付ごとに場所を仕分ける -->
                 <?php foreach ($travel_dates as $target_date) : ?>
-                                    <!-- 一行ずつ代入 -->
+                    <!-- 一行ずつ代入 -->
                     <?php foreach ($timeline as $timeline_while) : ?>
                         <?php if ($timeline_while['travel_dates'] == $target_date) : ?>
                             <section class="timeline">
@@ -131,6 +145,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="action_memo">
                                     <p><?php echo h($timeline_while['memo']); ?></p>
                                 </div>
+                                <!-- 削除フォーム -->
+                                <form action="" method="post">
+                                    <input type="hidden" name="delete_id" value="<?php echo $timeline_while['schedules_id']; ?>">
+                                    <input type="submit" value="削除">
+                                </form>
                             </section>
                         <?php endif; ?>
                     <?php endforeach; ?>
