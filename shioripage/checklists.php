@@ -4,7 +4,7 @@ include("../get_id.php");
 $db = dbconnect();
 // 画面に表示する処理
 // urlパラメーターがtravels.urlと一致するものを取得
-$stmt = $db->prepare('SELECT travels.id, list FROM checklists
+$stmt = $db->prepare('SELECT travels.id, checklists_id, list FROM checklists
                         JOIN travels ON checklists.travels_r_id = travels.id
                         WHERE travels.url = ?');
 if (!$stmt) {
@@ -19,7 +19,7 @@ if (!$success) {
 }
 
 // dbから受け取った値を代入する変数を用意
-$stmt->bind_result($id, $list);
+$stmt->bind_result($id, $checklists_id, $list);
 
 // 結果セットをメモリに格納する
 $stmt->store_result();
@@ -34,8 +34,22 @@ while ($stmt->fetch()) {
 
     // 取得した行を変数に代入
     $checklists[] = [
-        'list' => $list
+        'list' => $list,
+        'checklists_id' => $checklists_id
     ];
+}
+
+// checklistsの削除
+// delete関数用の変数用意
+$checklists_table = 'checklists';
+$checklists_id_name = 'checklists_id';
+
+// 削除ボタンが押されたら
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    $delete_id = $_POST['delete_id'];
+    delete($db, $checklists_table, $checklists_id_name, $delete_id);
+    header('Location: checklists.php?id=' . $url);
+    exit();
 }
 
 // checklistsの追加
@@ -108,6 +122,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="checkbox" name="checkbox-002" value="<?php echo h($checklist['list']); ?>">
                         <?php echo h($checklist['list']); ?>
                     </label>
+                    <form action="" method="post">
+                        <input type="hidden" name="delete_id" value="<?php echo h($checklist['checklists_id']); ?>">
+                        <button>削除</button><input type="submit" value="削除">
+                    </form>
                     <?php endforeach; ?>
                 </fieldset>
                 <div class="open-area">

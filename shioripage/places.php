@@ -5,7 +5,7 @@ require('../get_id.php');
 $db = dbconnect();
 // 画面に表示する処理
 // urlパラメーターがtravels.urlと一致するものを取得
-$stmt = $db->prepare('SELECT travels.id, name, address, googlemap_url FROM places 
+$stmt = $db->prepare('SELECT travels.id, places_id, name, address, googlemap_url FROM places 
                         JOIN travels ON places.travels_r_id = travels.id
                         WHERE travels.url = ?');
 if (!$stmt) {
@@ -20,7 +20,7 @@ if(!$success) {
 }
 
 // dbから受け取った値を代入する変数を用意
-$stmt->bind_result($id, $name, $address, $googlemap_url);
+$stmt->bind_result($id, $places_id, $name, $address, $googlemap_url);
 
 // 結果セットをメモリに格納する
 $stmt->store_result();
@@ -35,10 +35,23 @@ while ($stmt->fetch()) {
 
     // 取得した行を変数に代入
     $places[] = [
+            'places_id' => $places_id,
             'name' => $name,
             'address' => $address,
             'googlemap_url' => $googlemap_url
         ];
+}
+
+// placesの削除
+// delete関数用の変数用意
+$places_table = 'places';
+$places_id = 'places_id';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    $delete_id = $_POST['delete_id'];
+    delete($db, $places_table, $places_id, $delete_id);
+    header('Location: places.php?id=' . $url);
+    exit();
 }
 
 // placesの追加
@@ -116,6 +129,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </tr>
                     </tbody>
                 </table>
+                <!-- 削除フォーム -->
+                <form action="" method="post">
+                    <input type="hidden" name="delete_id" value="<?php echo h($places_while['places_id']); ?>">
+                    <input type="submit" value="削除">
+                </form>
                 <?php endforeach; ?>
                 <div class="open-area">
                     <label class="open" for="pop-up">✙</label>
