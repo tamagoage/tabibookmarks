@@ -43,3 +43,13 @@
 	background-color: #fff;
 	position: relative;
 }
+
+.checkbox-002 button {
+    background-color: initial;
+    min-width: initial;
+    line-height: initial;
+    border-radius: initial;
+    font-size: initial;
+    text-align: initial;
+	margin-top: initial;
+}

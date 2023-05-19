@@ -34,15 +34,15 @@ $timeline = [];
 // すべての行を取得する
 while ($stmt->fetch()) {
     // 取得した行を変数に代入
+    $timeObj = new DateTime($time); // $timeをDateTimeオブジェクトに変換
     $timeline[] = [
         'schedules_id' => $schedules_id,
-        'time' => $time,
+        'time' => $timeObj->format('H:i'), // format()メソッドを使用して時刻をフォーマット
         'travel_dates' => $day,
         'destination' => $destination,
         'memo' => $memo
     ];
 }
-
 
 // 時間順にソート
 usort($timeline, function ($a, $b) {
