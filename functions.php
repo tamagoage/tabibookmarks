@@ -1,17 +1,25 @@
 <?php 
+// config.iniから設定を読み込む
+$config = parse_ini_file('config.ini');
+$host = $config['host'];
+$username = $config['username'];
+$password = $config['password'];
+$database = $config['database'];
+
 function h($value) {
     return htmlspecialchars($value,ENT_QUOTES);
 }
 
 // dbへの接続
 function dbconnect() {
-    $db = new mysqli('localhost:8889','root','root','tabi');
-    if (!$db) {
-		die($db->error);
-	}
+    $db = new mysqli($host, $username, $password, $database);
+    if ($db->connect_errno) {
+        die("Failed to connect to MySQL: " . $db->connect_error);
+    }
 
     return $db;
 }
+
 
 // ランダムな文字列を生成
 function generateRandomString($length = 40) {
