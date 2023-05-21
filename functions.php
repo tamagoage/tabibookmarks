@@ -11,6 +11,7 @@ function h($value) {
 
 // dbへの接続
 function dbconnect() {
+    global $host, $username, $password, $database;
     $db = new mysqli($host, $username, $password, $database);
     if ($db->connect_errno) {
         die("Failed to connect to MySQL: " . $db->connect_error);
