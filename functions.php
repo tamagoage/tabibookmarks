@@ -1,10 +1,9 @@
 <?php 
-// config.iniから設定を読み込む
-$config = parse_ini_file('config.ini');
-$host = $config['host'];
-$username = $config['username'];
-$password = $config['password'];
-$database = $config['database'];
+// 環境変数を取得
+$host = getenv('DB_HOST');
+$username = getenv('DB_USERNAME');
+$password = getenv('DB_PASSWORD');
+$database = getenv('DB_DATABASE');
 
 function h($value) {
     return htmlspecialchars($value,ENT_QUOTES);
