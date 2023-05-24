@@ -133,11 +133,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="title">
                 <h1>schedule</h1>
             </div>
-            <ul>
-                <?php foreach ($travel_dates as $travel_date) : ?>
-                    <li><a href="#<?php echo h($travel_date); ?>"><?php echo h($travel_date); ?></a></li>
-                <?php endforeach; ?>
-            </ul>
+            < <!-- idへのリンク -->
+            <div class="shiori-inner">
+                <ul>
+                    <?php foreach ($travel_dates as $travel_date) : ?>
+                        <li><a href="#<?php echo h($travel_date); ?>"><?php echo h($travel_date); ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
             <div class="x-days">
                 <!-- 日付ごとに場所を仕分ける -->
                 <?php foreach ($travel_dates as $target_date) : ?>
