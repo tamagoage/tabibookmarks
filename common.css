@@ -131,7 +131,7 @@ body {
 .window {
 	width: 80vw;
 	max-width: 380px;
-	height: 440px;
+	height: auto;
 	background-color: #f8f8f8;
 	border-radius: 6px;
 	/* display: flex;
@@ -151,6 +151,8 @@ body {
 
 .window form {
 	height: 100%;
+	margin: auto;
+	margin-bottom: 5%;
 }
 
 .form-area {

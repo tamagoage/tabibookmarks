@@ -133,27 +133,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="title">
                 <h1>schedule</h1>
             </div>
+            <ul>
+                <?php foreach ($travel_dates as $travel_date) : ?>
+                    <li><a href="#<?php echo h($travel_date); ?>"><?php echo h($travel_date); ?></a></li>
+                <?php endforeach; ?>
+            </ul>
             <div class="x-days">
                 <!-- 日付ごとに場所を仕分ける -->
                 <?php foreach ($travel_dates as $target_date) : ?>
                     <!-- 一行ずつ代入 -->
                     <?php foreach ($timeline as $timeline_while) : ?>
                         <?php if ($timeline_while['travel_dates'] == $target_date) : ?>
-                            <section class="timeline">
-                                <div class="action_time"><?php echo h($timeline_while['time']); ?></div>
-                                <p class="action_title"><?php echo h($timeline_while['destination']); ?></p>
-                                <div class="action_memo">
-                                    <p><?php echo h($timeline_while['memo']); ?></p>
-                                </div>
-                                <!-- 削除フォーム -->
-                                <form action="" method="post">
-                                    <input type="hidden" name="delete_id" value="<?php echo $timeline_while['schedules_id']; ?>">
-                                    <input type="submit" value="削除">
-                                </form>
-                            </section>
+                            <div id="<?php echo h($target_date); ?>">
+                                <section class="timeline">
+                                    <div class="action_time"><?php echo h($timeline_while['time']); ?></div>
+                                    <p class="action_title"><?php echo h($timeline_while['destination']); ?></p>
+                                    <div class="action_memo">
+                                        <p><?php echo h($timeline_while['memo']); ?></p>
+                                    </div>
+                                    <!-- 削除フォーム -->
+                                    <form action="" method="post">
+                                        <input type="hidden" name="delete_id" value="<?php echo $timeline_while['schedules_id']; ?>">
+                                        <input type="submit" value="削除">
+                                    </form>
+                                </section>
+                            </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 <?php endforeach; ?>
+                <script>
+                        // ページの読み込みが完了した時に実行される処理
+                        window.addEventListener('DOMContentLoaded', function() {
+                            // リンクがクリックされた時の処理
+                            document.querySelectorAll('.shiori-inner ul li a').forEach(function(link) {
+                                link.addEventListener('click', function(event) {
+                                    // クリックされたリンクのhref属性の値を取得
+                                    var targetId = this.getAttribute('href');
+
+                                    // アクションエリアごとに処理を行う
+                                    document.querySelectorAll('.x-days > div').forEach(function(actionArea) {
+                                        // クリックされたリンクに対応するアクションエリアは表示し、それ以外は非表示にする
+                                        if (actionArea.id === targetId.slice(1)) {
+                                            actionArea.style.display = 'block';
+                                        } else {
+                                            actionArea.style.display = 'none';
+                                        }
+                                    });
+
+                                    // ページ遷移をキャンセル
+                                    event.preventDefault();
+                                });
+                            });
+                        });
+                    </script>
                 <div class="open-area">
                     <label class="open" for="pop-up">✙</label>
                 </div>
