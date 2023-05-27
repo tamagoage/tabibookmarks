@@ -1,4 +1,4 @@
-<?php 
+<?php
 require('../functions.php');
 require('../get_id.php');
 
@@ -9,13 +9,13 @@ $stmt = $db->prepare('SELECT travels.id, places_id, name, address, googlemap_url
                         JOIN travels ON places.travels_r_id = travels.id
                         WHERE travels.url = ?');
 if (!$stmt) {
-        die($db->error);
+    die($db->error);
 }
 // urlパラメーターを取得して代入
 $url = filter_input(INPUT_GET, 'id', FILTER_DEFAULT);
 $stmt->bind_param('s', $url);
 $success = $stmt->execute();
-if(!$success) {
+if (!$success) {
     die($db->error);
 }
 
@@ -35,11 +35,11 @@ while ($stmt->fetch()) {
 
     // 取得した行を変数に代入
     $places[] = [
-            'places_id' => $places_id,
-            'name' => $name,
-            'address' => $address,
-            'googlemap_url' => $googlemap_url
-        ];
+        'places_id' => $places_id,
+        'name' => $name,
+        'address' => $address,
+        'googlemap_url' => $googlemap_url
+    ];
 }
 
 // placesの削除
@@ -86,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -94,6 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="css/places.css">
     <title>行きたいところリスト</title>
 </head>
+
 <body>
     <header class="header">
         <div class="header-inner">
@@ -114,26 +116,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="title">
                 <h1>places</h1>
             </div>
-            <div class="bookmarks-erea">
-                <?php foreach ($places as $places_while): ?>
-                <table>
-                    <tbody>
-                        <tr class="name">
-                            <td colspan="7"><?php echo h($places_while['name']); ?></td>
-                        </tr>
-                        <tr class="googlemap">
-                            <td colspan="7"><?php echo h($places_while['googlemap_url']); ?></td>
-                        </tr>
-                        <tr class="address">
-                            <td colspan="7"><?php echo h($places_while['address']); ?></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!-- 削除フォーム -->
-                <form action="" method="post">
-                    <input type="hidden" name="delete_id" value="<?php echo h($places_while['places_id']); ?>">
-                    <input type="submit" value="削除">
-                </form>
+            <div class="bookmarks-area">
+                <?php foreach ($places as $places_while) : ?>
+                    <div class="bookmarks">
+                        <table>
+                            <tbody>
+                                <tr class="name">
+                                    <td colspan="7"><?php echo h($places_while['name']); ?></td>
+                                </tr>
+                                <tr class="googlemap">
+                                    <td colspan="7"><iframe src="https://maps.google.co.jp/maps?output=embed&q=<?php echo h($places_while['name']); ?>"></iframe></td>
+                                </tr>
+                                <tr class="address">
+                                    <td colspan="7"><?php echo h($places_while['address']); ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- 削除フォーム -->
+                        <form action="" method="post">
+                            <input type="hidden" name="delete_id" value="<?php echo h($places_while['places_id']); ?>">
+                            <input type="submit" value="削除">
+                        </form>
+                    </div>
                 <?php endforeach; ?>
                 <div class="open-area">
                     <label class="open" for="pop-up">✙</label>
@@ -169,4 +173,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="copyright">@tabibookmarks</div>
     </footer>
 </body>
+
 </html>
