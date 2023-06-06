@@ -118,8 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="header-inner">
             <h1>LOGO</h1>
         </div>
-    </header>
-    <main class="main">
         <div class="header-site-menu">
             <nav class="site-menu">
                 <ul>
@@ -129,6 +127,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </ul>
             </nav>
         </div>
+    </header>
+    <main class="main">
         <div class="shiori">
             <div class="title">
                 <h1>schedule</h1>

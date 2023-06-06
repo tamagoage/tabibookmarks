@@ -18,191 +18,241 @@ a {
     text-decoration: none;
 }
 
-body {
-    font-family: sans-serif;
-    font-size: 16px;
-    color: #324B50;
-    line-height: 1;
-    background-color: #ffffff;
+h1, h3 {
+    margin: 0;
+    font-weight: bold;
+}
+
+.header {
+    background-color: #1B5E20;
+    color: #fff;
+    padding: 20px;
 }
 
 .header-inner {
-    max-width: 420px;
-    height: 120px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 40px;
-    padding-right: 40px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-	background-color: #61CAF9;
 }
 
-.header-site-menu {
-	margin: auto 55px;
-	margin-top: 5px;
+.header h1 {
+    font-size: 24px;
 }
 
-.site-menu ul {
-	display: flex;
-	justify-content: center;
+.header-site-menu ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
 }
 
-.site-menu li {
-	margin-right: 25px;
+.header-site-menu li {
+    margin-left: 20px;
+}
+
+.header-site-menu a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.main {
+    margin: 20px;
 }
 
 .shiori {
-	margin: 15px;
-	padding: 20px;
-	background-color: #B6E8F4;
-	border-radius: 20px;
-	display: flex;
-	flex-direction: column;
-	min-height: 400px;
+    background-color: #decfcf30;
+    padding: 20px;
+	border-radius: 15px;
+	margin-bottom: 20px;
 }
 
-.shiori dt {
-	font-size: 30px;
-	margin-top: 20px;
-}
-
-.shiori button {
-	background-color: #FEADC8;
-    min-width: 180px;
-    line-height: 35px;
-    border-radius: 24px;
-    font-size: 14px;
+.title {
+    margin-bottom: 20px;
     text-align: center;
-	margin-top: 5px;
 }
 
-.footer {
-	max-width: 420px;
-	height: 90px;
-    background-color: #C0A1E1;
-    padding-top: 30px;
-    padding-bottom: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.bookmarks-erea {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 20px;
 }
 
-.copyright {
-	font-size: bold;
+.bookmarks-erea table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
 }
 
-
-/* 以下ポップアップ関係 */
-.open-area {
-	height: 55px;
-	width: 55px;
-	border-radius: 50%;
-	background-color: red;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: sticky;
-	bottom: 150px;
-	left: 300px;
+.bookmarks-erea td {
+    padding: 10px;
+    border-top: 1px solid #ddd;
 }
 
-.open {
-	cursor:pointer; /* マウスオーバーでカーソルの形状を変えることで、クリックできる要素だとわかりやすいように */
-	font-size: 50px;
+.name {
+    background-color: #E0E0E0;
+    font-weight: bold;
 }
-#pop-up {
-	display: none; /* label でコントロールするので input は非表示に */
+
+.googlemap iframe {
+    width: 100%;
+    height: 200px;
 }
-.overlay {
-	display: none; /* input にチェックが入るまでは非表示に */
+
+.address {
+    font-size: 12px;
+    color: #888;
 }
-#pop-up:checked + .overlay {
-	display: block;
-	z-index: 9999;
-	background-color: #00000070;
-	position: fixed;
-	width: 100%;
-	height: 100vh;
-	top: 0;
-	left: 0;
-}
+
 .window {
-	width: 80vw;
-	max-width: 380px;
-	height: auto;
-	background-color: #f8f8f8;
-	border-radius: 6px;
-	/* display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center; */
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+    background-color: #FAFAFA;
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
 }
 
-.window h3 {
-	margin-top: 15px;
-	text-align: center;
-}
-
-.window form {
-	height: 100%;
-	margin: auto;
-	margin-bottom: 5%;
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 .form-area {
-	height: calc(100% - 50px);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+    margin: 20px 0;
 }
 
 .form-area dt {
-	margin: 20px 0  0 10px;
-	text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-area .textarea {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+.form-area button:hover {
+    background-color: #388E3C;
+}
+
+.footer {
+    background-color: #1B5E20;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* ポップアップ関係 */
+.open-area {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    background-color: #1B5E20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    bottom: 150px;
+    left: 300px;
+    transition: background-color 0.3s ease;
+}
+
+.open-area:hover {
+    background-color: #388E3C;
+}
+
+.open {
+    cursor: pointer;
+    font-size: 40px;
+    color: #fff;
+}
+
+#pop-up {
+    display: none;
+}
+
+.overlay {
+    display: none;
+}
+
+#pop-up:checked + .overlay {
+    display: block;
+    z-index: 9999;
+    background-color: #00000070;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+}
+
+.window {
+    width: 80vw;
+    max-width: 400px;
+    background-color: #FAFAFA;
+    border-radius: 6px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.window h3 {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.window form {
+    height: 100%;
+}
+
+.form-area {
+    height: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.form-area dt {
+    margin: 20px 0 0 10px;
+    text-align: center;
 }
 
 .form-area dd {
-	margin: 5px auto 0;
-	text-align: center;
+    margin: 5px auto 0;
+    text-align: center;
 }
 
 .textarea {
-	height: 30px;
-	margin: 10px;
-	padding: 0 5px;
-	border-radius: 10%;
+    height: 30px;
+    margin: 10px;
+    padding: 0 5px;
+    border-radius: 10%;
 }
 
 .form-area button {
-	/* width: 100px;
-	margin: auto; */
-	background-color: #FEADC8;
-    width: 150px;
-    line-height: 35px;
-    border-radius: 24px;
-    font-size: 14px;
-    text-align: center;
-	margin: 5px auto 0;
+    padding: 10px 20px;
+    background-color: #1B5E20;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
-
-/* .text {
-	font-size: 18px;
-	margin: 0;
-} */
 
 .close {
-	cursor:pointer;
-	position: absolute;
-	top: 4px;
-	right: 4px;
-	font-size: 40px;
+    cursor: pointer;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    font-size: 40px;
 }
-/* ポップアップ関係終了 */
-
 
