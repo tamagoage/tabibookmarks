@@ -13,14 +13,14 @@ if (isset($_SESSION['form'])) {
     $form = $_SESSION['form'];
     $db = dbconnect();
     $stmt = $db->prepare('insert into travels (title, subtitle, s_date, e_date, password, url) values (?,?,?,?,?,?)');
-    if(!$stmt) {
+    if (!$stmt) {
         die($db->error);
     }
     $password = password_hash($form['password'], PASSWORD_DEFAULT);
     $url = generateRandomString();
     $stmt->bind_param('ssssss', $form['title'], $form['subtitle'], $form['s_date'], $form['e_date'], $password, $url);
     $success = $stmt->execute();
-    if(!$success) {
+    if (!$success) {
         die($db->error);
     }
     unset($_SESSION['form']);
@@ -61,22 +61,22 @@ if (isset($_SESSION['form'])) {
                 <div class="date">
                     <h2><?php echo h($form['s_date']); ?>~<?php echo h($form['e_date']); ?></h2>
                 </div>
-                <button id="copyButton">Copy!</button>
-            </div>
         </a>
+        <button id="copyButton">Copy!</button>
+                </div>
     </main>
     <footer class="footer">
         <div class="copyright">@tabibookmarks</div>
     </footer>
 
     <script>
-        document.getElementById('copyButton').addEventListener('click', function () {
+        document.getElementById('copyButton').addEventListener('click', function() {
             var url = "<?php echo $url; ?>";
             var fullURL = "https://tabibookmarks.herokuapp.com/shioripage/schedule.php?id=" + url;
 
-            navigator.clipboard.writeText(fullURL).then(function () {
+            navigator.clipboard.writeText(fullURL).then(function() {
                 alert("URLがクリップボードにコピーされました");
-            }, function () {
+            }, function() {
                 alert("URLのコピーに失敗しました");
             });
         });
