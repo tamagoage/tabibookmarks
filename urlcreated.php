@@ -61,13 +61,26 @@ if (isset($_SESSION['form'])) {
                 <div class="date">
                     <h2><?php echo h($form['s_date']); ?>~<?php echo h($form['e_date']); ?></h2>
                 </div>
-                <button>copy!</button>
+                <button id="copyButton">Copy!</button>
             </div>
         </a>
     </main>
     <footer class="footer">
         <div class="copyright">@tabibookmarks</div>
     </footer>
+
+    <script>
+        document.getElementById('copyButton').addEventListener('click', function () {
+            var url = "<?php echo $url; ?>";
+            var fullURL = "https://tabibookmarks.herokuapp.com/shioripage/schedule.php?id=" + url;
+
+            navigator.clipboard.writeText(fullURL).then(function () {
+                alert("URLがクリップボードにコピーされました");
+            }, function () {
+                alert("URLのコピーに失敗しました");
+            });
+        });
+    </script>
 </body>
 
 </html>
