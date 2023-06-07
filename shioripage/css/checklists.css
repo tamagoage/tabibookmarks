@@ -1,8 +1,15 @@
 .checkbox-002 {
-    display: flex;
     flex-wrap: wrap;
     gap: .5em 2em;
     border: none;
+}
+
+.checkbox-002 div {
+    display: flex;
+    align-items: center;
+    gap: 0 .5em;
+    position: relative;
+    cursor: pointer;
 }
 
 .checkbox-002 label {

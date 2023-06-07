@@ -118,14 +118,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="checklist-area">
                 <fieldset class="checkbox-002">
                     <?php foreach ($checklists as $checklist) : ?>
-                        <label>
-                            <input type="checkbox" name="checkbox-002" value="<?php echo h($checklist['list']); ?>">
-                            <?php echo h($checklist['list']); ?>
-                        </label>
-                        <form action="" method="post">
-                            <input type="hidden" name="delete_id" value="<?php echo h($checklist['checklists_id']); ?>">
-                            <button>削除</button><input type="submit" value="削除">
-                        </form>
+                        <div>
+                            <label>
+                                <input type="checkbox" name="checkbox-002" value="<?php echo h($checklist['list']); ?>">
+                                <?php echo h($checklist['list']); ?>
+                            </label>
+                            <form action="" method="post">
+                                <input type="hidden" name="delete_id" value="<?php echo h($checklist['checklists_id']); ?>">
+                                <button>削除</button><input type="submit" value="削除">
+                            </form>
+                        </div>
                     <?php endforeach; ?>
                 </fieldset>
                 <div class="open-area">
