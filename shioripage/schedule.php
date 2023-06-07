@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="title">
                 <h1>schedule</h1>
             </div>
-            < <!-- idへのリンク -->
+            <!-- idへのリンク -->
             <div class="shiori-inner">
                 <ul>
                     <?php foreach ($travel_dates as $travel_date) : ?>
